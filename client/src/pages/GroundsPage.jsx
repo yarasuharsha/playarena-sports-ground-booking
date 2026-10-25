@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { groundsApi } from '../api/endpoints';
 import {
   Search,
@@ -53,11 +53,20 @@ export default function GroundsPage() {
       page,
       limit: 6
     }),
-    keepPreviousData: true
+    placeholderData: keepPreviousData
   });
 
   const grounds = data?.data || [];
   const meta = data?.meta || { total: 0, totalPages: 1 };
+
+  const hasActiveFilters = Boolean(
+    (sportType && sportType !== 'All') ||
+    search.trim() ||
+    (city && city !== 'All') ||
+    minPrice ||
+    maxPrice ||
+    (sortBy && sortBy !== 'createdAt')
+  );
 
   const updateParam = (key, value) => {
     const nextParams = new URLSearchParams(searchParams);
@@ -267,13 +276,24 @@ export default function GroundsPage() {
             }}>
               <Search size={24} />
             </div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>No Sports Grounds Found</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '20px' }}>
-              We could not find any venues matching your current search or filter parameters.
-            </p>
-            <button onClick={handleResetFilters} className="btn btn-primary">
-              Clear All Filters
-            </button>
+            {!hasActiveFilters && meta.total === 0 ? (
+              <>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>No grounds have been published yet</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '12px' }}>
+                  There are currently no sports grounds published in the catalog.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>No Sports Grounds Found</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '20px' }}>
+                  We could not find any venues matching your current search or filter parameters.
+                </p>
+                <button onClick={handleResetFilters} className="btn btn-primary">
+                  Clear All Filters
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <>

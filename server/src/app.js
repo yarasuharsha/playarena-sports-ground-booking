@@ -10,16 +10,32 @@ const apiRoutes = require('./routes');
 
 const app = express();
 
+// Parse comma-separated CLIENT_URL entries (strip trailing slashes)
+const allowedOrigins = (config.clientUrl || '')
+  .split(',')
+  .map((url) => url.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
 // Security & Parsing Middleware
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (e.g. mobile apps, curl, tests)
     if (!origin) return callback(null, true);
-    // In development, allow localhost on any port
-    if (config.nodeEnv === 'development' || origin.includes('localhost') || origin === config.clientUrl) {
+
+    const normalizedOrigin = origin.replace(/\/$/, '');
+
+    // In non-production, allow localhost on any port
+    if (config.nodeEnv !== 'production') {
+      if (normalizedOrigin.includes('localhost') || normalizedOrigin.includes('127.0.0.1')) {
+        return callback(null, true);
+      }
+    }
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
       return callback(null, true);
     }
-    return callback(null, true);
+
+    return callback(new Error(`CORS blocked: Origin ${origin} not allowed`), false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

@@ -36,8 +36,7 @@ export default function MyBookingsPage() {
       tab: activeTab,
       limit: 50
     }),
-    enabled: !!user?.id,
-    keepPreviousData: false
+    enabled: !!user?.id
   });
 
   const bookings = data?.data || [];

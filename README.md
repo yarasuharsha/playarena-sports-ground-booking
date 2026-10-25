@@ -7,7 +7,7 @@
 
 **Project Links:**
 > **GitHub Repository:** `https://github.com/yarasuharsha/playarena-sports-ground-booking`  
-> **Live Demo:** `https://playarena-sports-ground-booking.vercel.app`  
+> **Live Demo:** `https://playarena-demo.vercel.app` *(Placeholder)*  
 
 **Local Development URLs:**
 > **Backend API Base URL:** `http://localhost:5000/api/v1`  
@@ -31,7 +31,7 @@
 12. [Testing and Troubleshooting](#12-testing-and-troubleshooting)
 13. [Academic Project Information](#13-academic-project-information)
 14. [Future Enhancements](#14-future-enhancements)
-15. [Live Demo and Repository Links](#15-live-demo-and-repository-links)
+15. [Screenshots, Demo, and Repository Links](#15-screenshots-demo-and-repository-links)
 
 ---
 
@@ -229,10 +229,21 @@ Fullstack_microproject/
 │   │   └── grounds.test.js               # 8 ground catalog and RBAC tests
 │   ├── package.json                      # Backend dependencies and test scripts
 │   └── .env.example                      # Backend environment template
-├── docs/                                 # Project utilities and testing collections
-│   ├── database_explain_analyze.sql      # SQL EXPLAIN ANALYZE query performance scripts
-│   ├── generate_pdfs.js                  # Automated documentation PDF generator script
-│   └── postman_collection.json           # Postman REST API test collection
+├── docs/                                 # Project documentation and submission artifacts
+│   ├── reports/                          # Subject micro-project reports (MD + PDF)
+│   │   ├── AdvancedDatabaseSystems_Report.md
+│   │   ├── AdvancedDatabaseSystems_Report.pdf
+│   │   ├── BackEndWebDevelopment_Report.md
+│   │   ├── BackEndWebDevelopment_Report.pdf
+│   │   ├── FullStackWebDevelopment_Report.md
+│   │   └── FullStackWebDevelopment_Report.pdf
+│   ├── screenshots/                      # Real application UI screenshots
+│   │   ├── playarena_admin.jpg           # Admin dashboard screenshot
+│   │   ├── playarena_details.jpg         # Ground details & slot booking screenshot
+│   │   └── playarena_home.jpg            # Home page & ground catalog screenshot
+│   ├── database_explain_analyze.sql      # SQL query analysis scripts
+│   └── postman_collection.json           # Postman API test collection
+├── submission/                           # Packaged submission ZIP archives
 ├── README.md                             # Comprehensive project documentation
 └── .gitignore                            # Git exclusion rules
 ```
@@ -332,22 +343,22 @@ npx prisma migrate deploy
 > [!TIP]
 > `npx prisma migrate deploy` applies the existing version-controlled migrations (including the schema tables, domain check constraints, and the PostgreSQL partial unique index) safely without prompting for database resets.
 
-### Step 8: Database Seeding (First-Time Setup Only)
+### Step 8: Database Seeding
 
-> [!WARNING]
-> **DESTRUCTIVE SEED WARNING:** The seed script (`server/prisma/seed.js`) begins by deleting all existing rows in `bookings`, `slots`, `grounds`, and `users` to ensure a clean slate. **Only run this command when setting up a brand new empty database.** Do NOT run this if you already have existing project data you wish to preserve.
+The seed script (`server/prisma/seed.js`) is **safe and idempotent**. It uses upserts and non-destructive inserts (`skipDuplicates: true`) so it can be run safely against development and production databases without wiping existing users or booking records. (Destructive wipe is strictly opt-in via `SEED_RESET=true` in non-production environments).
 
-If you are setting up the project for the first time and need the initial demo accounts, venues, and slot records:
+To initialize the demo accounts, venues, and booking slots:
 
 ```powershell
-# Run ONLY on a fresh setup
-npm run prisma:seed
+cd server
+npm run seed
 ```
+
 This populates:
-- 3 User accounts (1 Admin, 2 Regular Players)
-- 7 Sports venues across Bangalore, Hyderabad, and Mumbai
-- 280 Hourly slots spanning current and upcoming calendar dates
-- Realistic initial booking records
+- **3 User accounts:** 1 Admin (`admin@playarena.com`), 2 Regular Players (`user@playarena.com`, `aditi@playarena.com`)
+- **6 Sports venues:** Premium arenas across Bangalore, Hyderabad, and Mumbai
+- **Hourly time slots:** Configurable via `SEED_SLOT_DAYS` (default: 14 days × 8 daily slots = 112 slots per venue, 672 slots total)
+- **Demonstration bookings:** Initial sample reservations (created only if no bookings exist)
 
 After seeding, return to the project root:
 ```powershell
@@ -586,7 +597,7 @@ npm run build
 | **`Cannot find module '@prisma/client'`** | Prisma Client has not been generated. | In `server`, run `npx prisma generate`. |
 | **Port 5000 or 5173 in use** | A dangling Node process is occupying the port. | In PowerShell: `Get-Process node \| Stop-Process -Force`, then restart the server. |
 | **CORS Error in Browser Console** | `CLIENT_URL` in `server/.env` does not match Vite port. | Ensure `CLIENT_URL=http://localhost:5173` in `server/.env`. |
-| **Demo credentials fail to login (`401 Invalid credentials`)** | Database has not been seeded with demo users. | Run `npm run prisma:seed` in `server` (fresh setup only). |
+| **Demo credentials fail to login (`401 Invalid credentials`)** | Database has not been seeded with demo users. | Run `npm run seed` in `server`. |
 
 ---
 
@@ -625,20 +636,23 @@ The following features represent realistic planned extensions for future iterati
 
 ---
 
-## 15. Live Demo and Repository Links
+## 15. Screenshots, Demo, and Repository Links
 
-### Production Deployment
-- **Live Demo Web Application:** [`https://playarena-sports-ground-booking.vercel.app`](https://playarena-sports-ground-booking.vercel.app)
-- **GitHub Repository:** [`https://github.com/yarasuharsha/playarena-sports-ground-booking`](https://github.com/yarasuharsha/playarena-sports-ground-booking)
-- **Local Development Frontend:** `http://localhost:5173`
-- **Local Development Backend API:** `http://localhost:5000/api/v1`
+### Application Screenshots
 
-### Key Verified Application Views
-1. **Home Page & Arena Catalog (`/`):** Dynamic ground discovery across football turfs, cricket nets, and badminton courts with real-time keyword search, sport categories, city filtering, and price sorting.
-2. **Ground Details & Real-Time Slot Matrix (`/grounds/:id`):** Interactive slot grid displaying real-time availability (`OPEN`, `BOOKED`, `ENDED`) with atomic booking confirmation and concurrency conflict protection.
-3. **Player Bookings Dashboard (`/bookings`):** Player reservation history with instant booking reference display and 1-click cancellation with automatic slot availability restoration.
-4. **Administrative Operations Portal (`/admin`):**
-   - **Dashboard (`/admin`):** Real-time revenue metrics, booking counts, and slot utilization percentages.
-   - **Grounds Management (`/admin/grounds`):** Arena creation, editing, hourly rate configuration, and activation toggles.
-   - **Batch Slot Generator (`/admin/slots`):** Bulk generation of daily recurring 1-hour time slots across calendar date ranges.
-   - **System-Wide Bookings (`/admin/bookings`):** Complete overview and management of all reservations across the platform.
+#### 1. Home Page & Ground Catalog
+![PlayArena Home Page](docs/screenshots/playarena_home.jpg)
+*Browsing sports arenas with keyword search, multi-sport filtering, and transparent hourly rates.*
+
+#### 2. Ground Details & Slot Selection
+![PlayArena Slot Booking](docs/screenshots/playarena_details.jpg)
+*Real-time slot matrix showing OPEN, BOOKED, and ENDED statuses with anti-double booking protection.*
+
+#### 3. Administrative Portal & Operations Dashboard
+![PlayArena Admin Portal](docs/screenshots/playarena_admin.jpg)
+*Operational revenue metrics, slot utilization rates, ground management, and batch slot generation.*
+
+### Project Links
+- **GitHub Repository:** `https://github.com/yarasuharsha/playarena-sports-ground-booking`
+- **Live Deployment:** `https://playarena-demo.vercel.app` *(Placeholder)*
+- **Documentation & Reports:** Located in [`docs/reports/`](file:///c:/Users/yaras/OneDrive/Desktop/Fullstack_microproject/docs/reports)
