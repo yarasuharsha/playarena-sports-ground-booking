@@ -7,7 +7,7 @@
 
 **Project Links:**
 > **GitHub Repository:** `https://github.com/yarasuharsha/playarena-sports-ground-booking`  
-> **Live Demo:** `https://playarena-demo.vercel.app` *(Placeholder)*  
+> **Live Demo:** `https://playarena-sports-ground-booking.vercel.app/`  
 
 **Local Development URLs:**
 > **Backend API Base URL:** `http://localhost:5000/api/v1`  
@@ -654,5 +654,5 @@ The following features represent realistic planned extensions for future iterati
 
 ### Project Links
 - **GitHub Repository:** `https://github.com/yarasuharsha/playarena-sports-ground-booking`
-- **Live Deployment:** `https://playarena-demo.vercel.app` *(Placeholder)*
+- **Live Deployment:** `https://playarena-sports-ground-booking.vercel.app/`
 - **Documentation & Reports:** Located in [`docs/reports/`](file:///c:/Users/yaras/OneDrive/Desktop/Fullstack_microproject/docs/reports)
