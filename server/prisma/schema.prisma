@@ -1,0 +1,98 @@
+// PlayArena Sports Ground Booking System - Prisma Schema
+// PostgreSQL Normalized Relational Model
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookingStatus {
+  HELD
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  name      String
+  phone     String?
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+
+  @@map("users")
+}
+
+model Ground {
+  id          Int       @id @default(autoincrement())
+  name        String
+  sportType   String
+  description String    @db.Text
+  location    String
+  city        String
+  hourlyPrice Decimal   @db.Decimal(10, 2)
+  imageUrl    String    @db.Text
+  facilities  String[]
+  isActive    Boolean   @default(true)
+  rating      Float     @default(4.8)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  slots       Slot[]
+  bookings    Booking[]
+
+  @@index([sportType, city, isActive])
+  @@index([city])
+  @@map("grounds")
+}
+
+model Slot {
+  id          Int       @id @default(autoincrement())
+  groundId    Int
+  ground      Ground    @relation(fields: [groundId], references: [id], onDelete: Cascade)
+  date        DateTime  @db.Date
+  startTime   String    // Format "HH:mm" (24h)
+  endTime     String    // Format "HH:mm" (24h)
+  price       Decimal   @db.Decimal(10, 2)
+  isAvailable Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+
+  @@unique([groundId, date, startTime])
+  @@index([groundId, date])
+  @@index([date, isAvailable])
+  @@map("slots")
+}
+
+model Booking {
+  id               Int           @id @default(autoincrement())
+  bookingReference String        @unique
+  userId           Int
+  user             User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  groundId         Int
+  ground           Ground        @relation(fields: [groundId], references: [id], onDelete: Restrict)
+  slotId           Int
+  slot             Slot          @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  totalAmount      Decimal       @db.Decimal(10, 2)
+  status           BookingStatus @default(CONFIRMED)
+  notes            String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([userId, status])
+  @@index([groundId, createdAt])
+  @@index([status])
+  @@map("bookings")
+}
