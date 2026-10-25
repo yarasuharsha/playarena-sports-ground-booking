@@ -35,6 +35,11 @@ app.use(cors({
       return callback(null, true);
     }
 
+    // Allow Vercel preview and production deployments for playarena
+    if (/^https:\/\/playarena-[a-z0-9-]+\.vercel\.app$/.test(normalizedOrigin) || normalizedOrigin === 'https://playarena-sports-ground-booking.vercel.app') {
+      return callback(null, true);
+    }
+
     return callback(new Error(`CORS blocked: Origin ${origin} not allowed`), false);
   },
   credentials: true,
