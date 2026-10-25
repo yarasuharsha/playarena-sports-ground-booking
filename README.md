@@ -31,7 +31,7 @@
 12. [Testing and Troubleshooting](#12-testing-and-troubleshooting)
 13. [Academic Project Information](#13-academic-project-information)
 14. [Future Enhancements](#14-future-enhancements)
-15. [Screenshots, Demo, and Repository Links](#15-screenshots-demo-and-repository-links)
+15. [Demo and Repository Links](#15-demo-and-repository-links)
 
 ---
 
@@ -229,19 +229,9 @@ Fullstack_microproject/
 │   │   └── grounds.test.js               # 8 ground catalog and RBAC tests
 │   ├── package.json                      # Backend dependencies and test scripts
 │   └── .env.example                      # Backend environment template
-├── docs/                                 # Project documentation and submission artifacts
-│   ├── reports/                          # Subject micro-project reports (MD + PDF)
-│   │   ├── AdvancedDatabaseSystems_Report.md
-│   │   ├── AdvancedDatabaseSystems_Report.pdf
-│   │   ├── BackEndWebDevelopment_Report.md
-│   │   ├── BackEndWebDevelopment_Report.pdf
-│   │   ├── FullStackWebDevelopment_Report.md
-│   │   └── FullStackWebDevelopment_Report.pdf
-│   ├── screenshots/                      # Real application UI screenshots
-│   │   ├── playarena_admin.jpg           # Admin dashboard screenshot
-│   │   ├── playarena_details.jpg         # Ground details & slot booking screenshot
-│   │   └── playarena_home.jpg            # Home page & ground catalog screenshot
+├── docs/                                 # Project documentation and SQL/API artifacts
 │   ├── database_explain_analyze.sql      # SQL query analysis scripts
+│   ├── generate_pdfs.js                  # Documentation PDF generator
 │   └── postman_collection.json           # Postman API test collection
 ├── submission/                           # Packaged submission ZIP archives
 ├── README.md                             # Comprehensive project documentation
@@ -636,23 +626,8 @@ The following features represent realistic planned extensions for future iterati
 
 ---
 
-## 15. Screenshots, Demo, and Repository Links
-
-### Application Screenshots
-
-#### 1. Home Page & Ground Catalog
-![PlayArena Home Page](docs/screenshots/playarena_home.jpg)
-*Browsing sports arenas with keyword search, multi-sport filtering, and transparent hourly rates.*
-
-#### 2. Ground Details & Slot Selection
-![PlayArena Slot Booking](docs/screenshots/playarena_details.jpg)
-*Real-time slot matrix showing OPEN, BOOKED, and ENDED statuses with anti-double booking protection.*
-
-#### 3. Administrative Portal & Operations Dashboard
-![PlayArena Admin Portal](docs/screenshots/playarena_admin.jpg)
-*Operational revenue metrics, slot utilization rates, ground management, and batch slot generation.*
+## 15. Demo and Repository Links
 
 ### Project Links
 - **GitHub Repository:** `https://github.com/yarasuharsha/playarena-sports-ground-booking`
 - **Live Deployment:** `https://playarena-sports-ground-booking.vercel.app/`
-- **Documentation & Reports:** Located in [`docs/reports/`](file:///c:/Users/yaras/OneDrive/Desktop/Fullstack_microproject/docs/reports)
