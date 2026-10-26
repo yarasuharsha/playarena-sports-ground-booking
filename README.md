@@ -229,6 +229,7 @@ Fullstack_microproject/
 │   │   └── grounds.test.js               # 8 ground catalog and RBAC tests
 │   ├── package.json                      # Backend dependencies and test scripts
 │   └── .env.example                      # Backend environment template
+├── Screenshots/                          # Application screenshots (Full Stack, Backend & Database)
 ├── docs/                                 # Project documentation and SQL/API artifacts
 │   ├── database_explain_analyze.sql      # SQL query analysis scripts
 │   ├── generate_pdfs.js                  # Documentation PDF generator
