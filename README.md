@@ -265,6 +265,30 @@ Before installing and running PlayArena, ensure the following software is instal
 
 Follow these step-by-step instructions in **Windows PowerShell** to configure the project from scratch.
 
+### ⚡ Quick Start: Backend Server Setup (All-in-One Commands)
+
+If you are setting up and running the backend server from scratch, you can run this exact command sequence:
+
+```powershell
+cd server
+npm i
+npx prisma migrate status
+npx prisma migrate dev
+node prisma/seed.js
+npm start
+```
+
+| Command | What It Does |
+| :--- | :--- |
+| `cd server` | Enter the backend server folder |
+| `npm i` | Install all backend dependencies and generate Prisma Client |
+| `npx prisma migrate status` | Check PostgreSQL database connection and migration status |
+| `npx prisma migrate dev` | Apply all database schema migrations to PostgreSQL |
+| `node prisma/seed.js` | Seed the 6 sports grounds, demo users, and booking time slots |
+| `npm start` | Start the backend server on `http://localhost:5000` *(or `npm run dev` with auto-reload)* |
+
+---
+
 ### Step 1: Clone or Open Project Directory
 ```powershell
 git clone https://github.com/yarasuharsha/playarena-sports-ground-booking.git
@@ -274,7 +298,7 @@ cd playarena-sports-ground-booking
 ### Step 2: Install Backend Dependencies
 ```powershell
 cd server
-npm install
+npm i
 cd ..
 ```
 
@@ -323,17 +347,17 @@ createdb -U postgres playarena_db
 ```
 *(Enter your PostgreSQL password when prompted).*
 
-### Step 7: Generate Prisma Client & Apply Migrations
-Navigate to the `server` directory to generate the Prisma Client and apply the existing database schema migrations:
+### Step 7: Check Status & Apply Prisma Migrations
+Navigate to the `server` directory to check migration status and apply the database schema migrations:
 
 ```powershell
 cd server
-npx prisma generate
-npx prisma migrate deploy
+npx prisma migrate status
+npx prisma migrate dev
 ```
 
 > [!TIP]
-> `npx prisma migrate deploy` applies the existing version-controlled migrations (including the schema tables, domain check constraints, and the PostgreSQL partial unique index) safely without prompting for database resets.
+> `npx prisma migrate dev` ensures your local database is completely in sync with the Prisma schema and compiles the client. In CI/CD or production environments, `npx prisma migrate deploy` is used instead.
 
 ### Step 8: Database Seeding
 
@@ -343,8 +367,9 @@ To initialize the demo accounts, venues, and booking slots:
 
 ```powershell
 cd server
-npm run seed
+node prisma/seed.js
 ```
+*(Or run `npm run seed`).*
 
 This populates:
 - **3 User accounts:** 1 Admin (`admin@playarena.com`), 2 Regular Players (`user@playarena.com`, `aditi@playarena.com`)
@@ -367,7 +392,7 @@ To run the application locally, open **two separate terminal windows** (from the
 
 | Service | Directory | Command | Local URL |
 | :--- | :--- | :--- | :--- |
-| **Backend API** | `server` | `npm run dev` | `http://localhost:5000` |
+| **Backend API** | `server` | `npm start` *(or `npm run dev`)* | `http://localhost:5000` |
 | **Frontend Web App** | `client` | `npm run dev` | `http://localhost:5173` |
 
 ---
@@ -375,9 +400,9 @@ To run the application locally, open **two separate terminal windows** (from the
 ### Terminal 1: Start Backend Server
 ```powershell
 cd server
-npm run dev
+npm start
 ```
-- The backend will start with `nodemon`.
+*(Or use `npm run dev` to start with nodemon auto-reloading).*
 - Server runs on: **`http://localhost:5000`**
 - API Base URL: **`http://localhost:5000/api/v1`**
 
