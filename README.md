@@ -265,9 +265,20 @@ Before installing and running PlayArena, ensure the following software is instal
 
 Follow these step-by-step instructions in **Windows PowerShell** to configure the project from scratch.
 
-### ⚡ Quick Start: Backend Server Setup (All-in-One Commands)
+### Step 1: Clone or Open Project Directory
+```powershell
+git clone https://github.com/yarasuharsha/playarena-sports-ground-booking.git
+cd playarena-sports-ground-booking
+```
 
-If you are setting up and running the backend server from scratch, you can run this exact command sequence:
+### Step 2: Install Backend Dependencies
+```powershell
+cd server
+npm install
+cd ..
+```
+
+### If you are setting up and running the backend server from scratch, you can run this exact command sequence
 
 ```powershell
 cd server
@@ -278,29 +289,20 @@ node prisma/seed.js
 npm start
 ```
 
-| Command | What It Does |
-| :--- | :--- |
-| `cd server` | Enter the backend server folder |
-| `npm i` | Install all backend dependencies and generate Prisma Client |
-| `npx prisma migrate status` | Check PostgreSQL database connection and migration status |
-| `npx prisma migrate dev` | Apply all database schema migrations to PostgreSQL |
-| `node prisma/seed.js` | Seed the 6 sports grounds, demo users, and booking time slots |
-| `npm start` | Start the backend server on `http://localhost:5000` *(or `npm run dev` with auto-reload)* |
+> [!NOTE]
+> **Prerequisites for running these commands:**
+> - **PostgreSQL** must be installed, active, and running locally on port `5432`.
+> - A valid [`server/.env`](file:///c:/Users/yaras/OneDrive/Desktop/Fullstack_microproject/server/.env) file must exist and contain your correct local PostgreSQL database connection string (`DATABASE_URL`) before executing the migration, seed, or start commands.
+
+**What this command sequence does:**
+1. **`cd server`** — Navigates into the backend server directory.
+2. **`npm i`** — Installs all backend dependencies and automatically compiles the Prisma Client.
+3. **`npx prisma migrate status`** — Verifies the PostgreSQL connection and checks the status of database schema migrations.
+4. **`npx prisma migrate dev`** — Applies all pending Prisma schema migrations to your local PostgreSQL database.
+5. **`node prisma/seed.js`** — Seeds the database with the 6 verified sports venues, initial booking time slots, and demo evaluator accounts.
+6. **`npm start`** — Starts the Express backend server on `http://localhost:5000` *(or use `npm run dev` for nodemon auto-reloading)*.
 
 ---
-
-### Step 1: Clone or Open Project Directory
-```powershell
-git clone https://github.com/yarasuharsha/playarena-sports-ground-booking.git
-cd playarena-sports-ground-booking
-```
-
-### Step 2: Install Backend Dependencies
-```powershell
-cd server
-npm i
-cd ..
-```
 
 ### Step 3: Install Frontend Dependencies
 ```powershell
