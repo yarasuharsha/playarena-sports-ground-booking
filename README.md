@@ -265,9 +265,10 @@ Before installing and running PlayArena, ensure the following software is instal
 
 Follow these step-by-step instructions in **Windows PowerShell** to configure the project from scratch.
 
-### Step 1: Open Project Directory
+### Step 1: Clone or Open Project Directory
 ```powershell
-cd "C:\Users\yaras\OneDrive\Desktop\Fullstack_microproject"
+git clone https://github.com/yarasuharsha/playarena-sports-ground-booking.git
+cd playarena-sports-ground-booking
 ```
 
 ### Step 2: Install Backend Dependencies
@@ -360,11 +361,20 @@ cd ..
 
 ## 7. Running the Application
 
-To run the application locally, open **two separate PowerShell terminals**.
+To run the application locally, open **two separate terminal windows** (from the project root):
+
+### ⚡ Quick Run Summary
+
+| Service | Directory | Command | Local URL |
+| :--- | :--- | :--- | :--- |
+| **Backend API** | `server` | `npm run dev` | `http://localhost:5000` |
+| **Frontend Web App** | `client` | `npm run dev` | `http://localhost:5173` |
+
+---
 
 ### Terminal 1: Start Backend Server
 ```powershell
-cd "C:\Users\yaras\OneDrive\Desktop\Fullstack_microproject\server"
+cd server
 npm run dev
 ```
 - The backend will start with `nodemon`.
@@ -385,7 +395,7 @@ npm run dev
 
 ### Terminal 2: Start Frontend Application
 ```powershell
-cd "C:\Users\yaras\OneDrive\Desktop\Fullstack_microproject\client"
+cd client
 npm run dev
 ```
 - The Vite development server will start instantly.
